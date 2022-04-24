@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import {v4 as uuidv4} from 'uuid';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
+import Header from './components/Header';
 import Tasks from "./components/Tasks";
 import AddTask from './components/AddTask';
-import Header from './components/Header';
+import TaskDetails from './components/TaskDetails';
 
 import './App.css';
 
@@ -58,14 +59,26 @@ const App = () => {
   }
 
   return (
-    <Router>
-      <div className='container'>
-        <Header />
-        <AddTask handleTaskAddition={handleTaskAddition} />
-        {/* adicionando o componente Task no App */}
-        <Tasks tasks={tasks} handleTaskClick={handleTaskClick} handleTaskDelete={handleTaskDelete}/>
-      </div>
-    </Router>
-  )
+		<Router>
+			<div className="container">
+				<Header />
+				<Route
+					path="/"
+					exact
+					render={() => (
+						<>
+							<AddTask handleTaskAddition={handleTaskAddition} />
+							<Tasks
+								tasks={tasks}
+								handleTaskClick={handleTaskClick}
+								handleTaskDeletion={handleTaskDelete}
+							/>
+						</>
+					)}
+				/>
+				<Route path="/:taskTitle" exact component={TaskDetails} />
+			</div>
+		</Router>
+	);
 }
 export default App;
